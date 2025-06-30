@@ -2,8 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/SLICK2D/SLICK2D.iml" filepath="$PROJECT_DIR$/SLICK2D/SLICK2D.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/untitled3.iml" filepath="$PROJECT_DIR$/.idea/untitled3.iml" />
+      <module fileurl="file://$PROJECT_DIR$/SLICK2D/practice/practice.iml" filepath="$PROJECT_DIR$/SLICK2D/practice/practice.iml" />
     </modules>
   </component>
 </project>

@@ -1,0 +1,17 @@
+<component name="libraryTable">
+  <library name="ibxm">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/slick/lib/ibxm.jar!/" />
+      <root url="jar://$PROJECT_DIR$/slick/lib/jinput.jar!/" />
+      <root url="jar://$PROJECT_DIR$/slick/lib/jnlp.jar!/" />
+      <root url="jar://$PROJECT_DIR$/slick/lib/jogg-0.0.7.jar!/" />
+      <root url="jar://$PROJECT_DIR$/slick/lib/jorbis-0.0.15.jar!/" />
+      <root url="jar://$PROJECT_DIR$/slick/lib/natives-windows.jar!/" />
+      <root url="jar://$PROJECT_DIR$/slick/lib/slick.jar!/" />
+      <root url="jar://$PROJECT_DIR$/slick/lib/slick-examples.jar!/" />
+      <root url="jar://$PROJECT_DIR$/slick/lib/tinylinepp.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

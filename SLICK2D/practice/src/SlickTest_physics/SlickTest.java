@@ -1,3 +1,5 @@
+package SlickTest_physics;
+
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.BasicGame;
 import org.newdawn.slick.GameContainer;
@@ -7,7 +9,7 @@ import org.newdawn.slick.SlickException;
 public class SlickTest extends BasicGame {
 
     public SlickTest() {
-        super("Slick2D 설치 테스트");
+        super("이곳이 제목이 나오는 곳");
     }
 
     @Override
@@ -22,7 +24,7 @@ public class SlickTest extends BasicGame {
 
     @Override
     public void render(GameContainer container, Graphics g) throws SlickException {
-        g.drawString("Slick2D 설치 완료!", 100, 100);
+        g.drawString("한글 korean!", 100, 100);
     }
 
     public static void main(String[] args) {

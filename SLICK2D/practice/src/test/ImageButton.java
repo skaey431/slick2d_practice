@@ -7,14 +7,17 @@ public class ImageButton {
     private Image normalImage;
     private Image hoverImage;
     private boolean clicked = false;
+    private boolean wasPressed = false;
 
-    public ImageButton(float x, float y, Image normalImage, Image hoverImage) {
+    public ImageButton(float x, float y, float targetWidth, Image normalImage, Image hoverImage) {
         this.x = x;
         this.y = y;
         this.normalImage = normalImage;
         this.hoverImage = hoverImage;
-        this.width = normalImage.getWidth();
-        this.height = normalImage.getHeight();
+
+        float ratio = normalImage.getHeight() / (float) normalImage.getWidth();
+        this.width = targetWidth;
+        this.height = targetWidth * ratio;
     }
 
     public void update(GameContainer container) {
@@ -22,9 +25,17 @@ public class ImageButton {
         float mouseX = input.getMouseX();
         float mouseY = input.getMouseY();
 
-        if (isMouseOver(mouseX, mouseY) && input.isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
-            clicked = !clicked;
+        boolean over = isMouseOver(mouseX, mouseY);
+        boolean pressed = input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON);
+
+        // 클릭 순간만 판별 (누른 상태가 아니라 처음 누를 때)
+        if (over && pressed && !wasPressed) {
+            clicked = true;
+        } else {
+            clicked = false;
         }
+
+        wasPressed = pressed;
     }
 
     public void render(GameContainer container, Graphics g) {
@@ -33,18 +44,19 @@ public class ImageButton {
         float mouseY = input.getMouseY();
 
         Image imgToDraw = isMouseOver(mouseX, mouseY) ? hoverImage : normalImage;
-        g.drawImage(imgToDraw, x, y , 100,100, imgToDraw.getWidth()*16, imgToDraw.getHeight()*16);
-
-        g.setColor(Color.white);
-        g.drawString(clicked ? "클릭됨!" : "클릭해보세요", x + 20, y + height + 10);
-    }
-
-    public boolean isMouseOver(float mouseX, float mouseY) {
-        return mouseX >= x && mouseX <= x + width &&
-                mouseY >= y && mouseY <= y + height;
+        g.drawImage(imgToDraw, x, y, x + width, y + height, 0, 0, imgToDraw.getWidth(), imgToDraw.getHeight());
     }
 
     public boolean isClicked() {
         return clicked;
     }
+
+    public boolean isMouseOver(float mx, float my) {
+        return mx >= x && mx <= x + width && my >= y && my <= y + height;
+    }
+
+    public float getX() { return x; }
+    public float getY() { return y; }
+    public float getWidth() { return width; }
+    public float getHeight() { return height; }
 }

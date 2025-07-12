@@ -11,6 +11,19 @@ public class Moving {
     private final float groundY = 500;
     private final float jumpPower = -10;
     private boolean onGround = false;
+    private Image player;
+
+    public Moving(String playerSource,GameContainer container){
+        try {
+            this.init(container,playerSource);
+        } catch (SlickException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void init(GameContainer container,String playerSource) throws SlickException{
+        this.player = new Image(playerSource);
+    }
 
     // Moving.java
     private float width = 50, height = 50;
@@ -86,7 +99,7 @@ public class Moving {
 
 
     public void render(GameContainer container, Graphics g) {
-        g.fillRect(x, y, 50, 50); // 플레이어 사각형
+        player.draw(x, y); // 플레이어 사각형
         g.drawLine(0, groundY + 50, 800, groundY + 50);
     }
 }

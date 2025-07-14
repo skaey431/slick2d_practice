@@ -15,7 +15,8 @@ public class MainTest extends BasicGame {
 
     @Override
     public void init(GameContainer gameContainer) throws SlickException {
-        moving = new Moving("resources/chatgpt_character_walking_0001.png","resources/chatgpt_character_walking_0002.png",gameContainer);
+        moving = new Moving("resources/chatgpt_character_walking_0001.png","resources/chatgpt_character_walking_0002.png");
+        moving.init(gameContainer);
         walls = new ArrayList<>();
         walls.add(new Wall(300, 450, 50, 100,"resources/bricks.png")); // 예시: (x, y, w, h)
         walls.add(new Wall(100, 500, 50, 50,"resources/bricks.png")); // 예시: (x, y, w, h)

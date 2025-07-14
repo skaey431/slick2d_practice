@@ -11,7 +11,7 @@ public class Moving {
     private final float jumpPower = -10;
     private boolean onGround = false;
 
-    private string frame1Source;
+    private String frame1Source;
     private String frame2Source;
 
     private Image frame1;
@@ -22,6 +22,7 @@ public class Moving {
     // 애니메이션 관련
     private boolean isMoving = false;
     private boolean showFrame1 = true;
+    private boolean facingLeft = true;
     private int animationTimer = 0;
     private final int animationInterval = 200; // 200ms마다 프레임 전환
 
@@ -30,9 +31,14 @@ public class Moving {
         this.frame2Source = frame2Source;
     }
 
+    private Image frame1Flipped;
+    private Image frame2Flipped;
+
     public void init(GameContainer container) throws SlickException {
         frame1 = new Image(frame1Source);
         frame2 = new Image(frame2Source);
+        frame1Flipped = frame1.getFlippedCopy(true, false);
+        frame2Flipped = frame2.getFlippedCopy(true, false);
         width = frame1.getWidth();
         height = frame1.getHeight();
     }
@@ -99,8 +105,8 @@ public class Moving {
         }
 
         // 바닥 충돌 처리
-        if (y >= groundY) {
-            y = groundY;
+        if (y >= groundY - height) {
+            y = groundY - height;
             velocityY = 0;
             onGround = true;
         }
@@ -112,15 +118,36 @@ public class Moving {
                 animationTimer = 0;
                 showFrame1 = !showFrame1;
             }
+            if (input.isKeyDown(Input.KEY_LEFT)) {
+                nextX -= speed;
+                facingLeft = true;
+            }
+            if (input.isKeyDown(Input.KEY_RIGHT)) {
+                nextX += speed;
+                facingLeft = false;
+            }
         } else {
             showFrame1 = true;
             animationTimer = 0;
         }
+
     }
 
     public void render(GameContainer container, Graphics g) {
-        Image currentFrame = showFrame1 ? frame1 : frame2;
+        g.setColor(Color.blue);
+        g.fillRect(0, 0, container.getWidth(), container.getHeight());
+
+        Image currentFrame;
+        if (showFrame1) {
+            currentFrame = facingLeft ? frame1Flipped : frame1;
+        } else {
+            currentFrame = facingLeft ? frame2Flipped : frame2;
+        }
+
         currentFrame.draw(x, y);
-        g.drawLine(0, groundY + height, 800, groundY + height);
+
+        g.setColor(Color.white);
+        g.drawLine(0, groundY, container.getWidth(), groundY);
     }
+
 }

@@ -1,7 +1,6 @@
 package test.physics;
 
 import org.newdawn.slick.*;
-
 import java.util.List;
 
 public class Moving {
@@ -11,24 +10,33 @@ public class Moving {
     private final float groundY = 500;
     private final float jumpPower = -10;
     private boolean onGround = false;
-    private Image player;
 
-    public Moving(String playerSource,GameContainer container){
-        try {
-            this.init(container,playerSource);
-        } catch (SlickException e) {
-            throw new RuntimeException(e);
-        }
-    }
+    private string frame1Source;
+    private String frame2Source;
 
-    public void init(GameContainer container,String playerSource) throws SlickException{
-        this.player = new Image(playerSource);
-    }
+    private Image frame1;
+    private Image frame2;
 
-    // Moving.java
     private float width = 50, height = 50;
 
-    // update 메서드 수정
+    // 애니메이션 관련
+    private boolean isMoving = false;
+    private boolean showFrame1 = true;
+    private int animationTimer = 0;
+    private final int animationInterval = 200; // 200ms마다 프레임 전환
+
+    public Moving(String frame1Source, String frame2Source) {
+        this.frame1Source = frame1Source;
+        this.frame2Source = frame2Source;
+    }
+
+    public void init(GameContainer container) throws SlickException {
+        frame1 = new Image(frame1Source);
+        frame2 = new Image(frame2Source);
+        width = frame1.getWidth();
+        height = frame1.getHeight();
+    }
+
     public void update(GameContainer container, int delta, List<Wall> walls) {
         Input input = container.getInput();
         float speed = 0.2f * delta;
@@ -36,13 +44,16 @@ public class Moving {
         float nextY = y;
         boolean blockedX = false;
         boolean blockedY = false;
+        isMoving = false;
 
-        // ---- X축 이동 처리 ----
+        // X축 이동
         if (input.isKeyDown(Input.KEY_LEFT)) {
             nextX -= speed;
+            isMoving = true;
         }
         if (input.isKeyDown(Input.KEY_RIGHT)) {
             nextX += speed;
+            isMoving = true;
         }
 
         for (Wall wall : walls) {
@@ -56,26 +67,25 @@ public class Moving {
             x = nextX;
         }
 
-        // ---- 점프 ----
+        // 점프
         if ((input.isKeyPressed(Input.KEY_SPACE) || input.isKeyPressed(Input.KEY_UP)) && onGround) {
             velocityY = jumpPower;
             onGround = false;
         }
 
-        // ---- 중력 적용 및 Y축 이동 ----
+        // 중력 + Y축 이동
         velocityY += gravity;
         nextY += velocityY;
 
-        blockedY = false;
         for (Wall wall : walls) {
             if (wall.intersects(x, nextY, width, height)) {
                 blockedY = true;
 
                 if (velocityY > 0) {
-                    y = wall.getY() - height; // 바닥 위로 고정
+                    y = wall.getY() - height;
                     onGround = true;
                 } else if (velocityY < 0) {
-                    y = wall.getY() + wall.getHeight(); // 천장 아래로 고정
+                    y = wall.getY() + wall.getHeight();
                 }
 
                 velocityY = 0;
@@ -88,18 +98,29 @@ public class Moving {
             onGround = false;
         }
 
-        // ---- 바닥 충돌 처리 ----
+        // 바닥 충돌 처리
         if (y >= groundY) {
             y = groundY;
             velocityY = 0;
             onGround = true;
         }
+
+        // --- 애니메이션 처리 ---
+        if (isMoving) {
+            animationTimer += delta;
+            if (animationTimer >= animationInterval) {
+                animationTimer = 0;
+                showFrame1 = !showFrame1;
+            }
+        } else {
+            showFrame1 = true;
+            animationTimer = 0;
+        }
     }
 
-
-
     public void render(GameContainer container, Graphics g) {
-        player.draw(x, y); // 플레이어 사각형
-        g.drawLine(0, groundY + 50, 800, groundY + 50);
+        Image currentFrame = showFrame1 ? frame1 : frame2;
+        currentFrame.draw(x, y);
+        g.drawLine(0, groundY + height, 800, groundY + height);
     }
 }
